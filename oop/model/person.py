@@ -4,11 +4,12 @@ import pickle
 from oop.conf import setting
 from oop.model.course import Course
 from oop.model.school import School
+from oop.model.clazz import Clazz
 
 
 class Person(object):
 
-    def __init__(self, name=None, pwd=None, is_login=False):
+    def __init__(self, name=None, pwd="pwd", is_login=False):
         self.name = name
         self.pwd = pwd
         self.is_login = is_login
@@ -80,11 +81,31 @@ class Student(Person):
 
 class Admin(Person):
     def create_teacher(self):
-        print("create_teacher")
+        name = input("请输入讲师名-->").strip()
+        teacher = Teacher(name)
+        file_path = os.path.join(setting.BASE_DIR, "user", name)
+        if not os.path.exists(file_path):
+            f = open(file_path, "wb")
+            pickle.dump(teacher, f)
+            f.close()
+            print("讲师创建成功")
+        else:
+            print("该讲师已存在")
         return True
 
     def create_class(self):
-        print("create_class")
+        name = input("请输入班级名-->").strip()
+        course = input("请输入课程名-->").strip()
+        teacher = input("请输入讲师名-->").strip()
+        clazz = Clazz(name, course, teacher)
+        file_path = os.path.join(setting.BASE_DIR, "school", name)
+        if not os.path.exists(file_path):
+            f = open(file_path, "wb")
+            pickle.dump(clazz, f)
+            f.close()
+            print("班级创建成功")
+        else:
+            print("该班级已存在")
         return True
 
     def create_course(self):
