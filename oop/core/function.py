@@ -11,9 +11,9 @@ def login(func):
         pwd = input("请输入密码-->").strip()
         person = Person(name, pwd)
         user_data = person.check()
-        if user_data and not user_data["is_login"]:
-            user_data["is_login"] = True
-            user_data["person"] = person
+
+        if user_data and not user_data.is_login:
+            user_data.is_login = True
             return func(*args, **kwargs)
 
     return inner
@@ -22,7 +22,7 @@ def login(func):
 def check_role(param):
     def _check_role(func):
         def inner(*args, **kwargs):
-            role = user_data["role"]
+            role = user_data.role
             if role == param:
                 return func(*args, **kwargs)
             else:
@@ -61,10 +61,8 @@ def student():
         }
 
         if choice in menu_dict:
-            if user_data["person"]:
-                user = user_data["person"]
-                student = Student(user.name, user.pwd)
-                exit_flag = eval(menu_dict[choice])
+            student = Student(user_data.name, user_data.pwd)
+            exit_flag = eval(menu_dict[choice])
 
 
 @login
@@ -90,10 +88,8 @@ def admin():
             "5": "back()"
         }
         if choice in menu_dict:
-            if user_data["person"]:
-                user = user_data["person"]
-                admin = Admin(user.name, user.pwd)
-                exit_flag = eval(menu_dict[choice])
+            admin = Admin(user_data.name, user_data.pwd)
+            exit_flag = eval(menu_dict[choice])
 
 
 @login
@@ -119,7 +115,5 @@ def teacher():
             "5": "back()"
         }
         if choice in menu_dict:
-            if user_data["person"]:
-                user = user_data["person"]
-                teacher = Teacher(user.name, user.pwd)
-                exit_flag = eval(menu_dict[choice])
+            teacher = Teacher(user_data.name, user_data.pwd)
+            exit_flag = eval(menu_dict[choice])

@@ -9,6 +9,7 @@ def loadByUsername(username):
     if os.path.exists(file_path):
         f = open(file_path, "rb")
         data = pickle.load(f, encoding="UTF-8")
+        print(data)
         f.close()
         return data
     else:
